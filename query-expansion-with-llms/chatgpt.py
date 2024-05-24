@@ -11,13 +11,19 @@ relevant documents through the additional terms.
 """
 
 def main():
-    query = "machine learning"
-    print(transform_query(query))
+    query = "retrieval system improving effectiveness"
+    print(transform_query(query=query, prompt_technique="cot"))
+    print(transform_query(query=query, prompt_technique="synonym"))
 
-def transform_query(query, prompt_technique="synonym"):
+def transform_query(query, prompt_technique):
     if prompt_technique == "synonym":
+        #print("SYNONYM EXPANSION")
         prompt = synonym_prompt(query)
         return expand_query_with_gpt4(prompt, temperature=0.3)
+    elif prompt_technique == "cot":
+        #print("CHAIN OF THOUGHT:")
+        prompt = chain_of_thoughts(query)
+        return query + expand_query_with_gpt4(prompt, temperature=0.3).replace('"', ' ')
 
 def expand_query_with_gpt4(prompt, model="gpt-4", temperature=0):
     messages = [{"role": "user", "content": prompt}]
@@ -31,7 +37,7 @@ def expand_query_with_gpt4(prompt, model="gpt-4", temperature=0):
 def synonym_prompt(query):
     prompt = f"""
         {context}
-        Your task is to expand a given query below delimited by tripple quotes by
+        Your task is to expand a given query below delimited by triple quotes by
         first extracting keywords, for example in the query: Machine learning
         the keyword can be interpreted as \'Machine Learning\'.
         Second, try to understand the information need the user which provided
@@ -44,6 +50,17 @@ def synonym_prompt(query):
         query: ``` {query} ```
     """
     return prompt
+
+def  chain_of_thoughts(query):
+    #not really cot
+    prompt = f"""
+    Your task is to answer the query below delimited by triple quotes.
+    The output should be in a string format containing only words, remove punctuation.
+    query: ``` {query} ```
+    """
+    return prompt
+
+
 
 
 if __name__ == "__main__":
