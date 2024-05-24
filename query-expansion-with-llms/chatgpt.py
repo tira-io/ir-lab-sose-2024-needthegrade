@@ -1,28 +1,46 @@
 import openai
-import os
 
 client = openai.OpenAI() #only works in codespace, go to codespaces in settings and add secret "OPENAI_API_KEY"
 
+context = """
+You are an expert in Information Retrieval. I am building an Information Retrieval System. Therefore I want to use a technique
+called query expansion to improve the retrieval systems effectiveness or more specificially I aim to improve the recall of the retrieval system.
+Recall is a measure that rates the fraction of relevant documents that are retrieved. Query Expansions works by taking a given query and
+adding additional terms to it, such that the information need of the user which entered the query is met more precisely by finding more
+relevant documents through the additional terms. 
+"""
+
 def main():
     query = "machine learning"
-    prompt = get_prompt(query=query)
-    expanded_query = expand_query_with_gpt4(prompt=prompt)
-    print(expanded_query)
+    print(transform_query(query))
 
-def expand_query_with_gpt4(prompt, model="gpt-4"):
+def transform_query(query, prompt_technique="synonym"):
+    if prompt_technique == "synonym":
+        prompt = synonym_prompt(query)
+        return expand_query_with_gpt4(prompt, temperature=0.3)
+
+def expand_query_with_gpt4(prompt, model="gpt-4", temperature=0):
     messages = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
         model=model,
         messages=messages,
-        temperature=0
+        temperature=temperature
     )
     return response.choices[0].message.content
 
-def get_prompt(query):
-    #add context before every prompt like I am building an retrieval system...
+def synonym_prompt(query):
     prompt = f"""
-        Your task is to expand a given query below delimited by tripple quotes by finding synonyms
-        of any important word in the query and then adding them to the query.
+        {context}
+        Your task is to expand a given query below delimited by tripple quotes by
+        first extracting keywords, for example in the query: Machine learning
+        the keyword can be interpreted as \'Machine Learning\'.
+        Second, try to understand the information need the user which provided
+        the query might have.
+        Then given the information need: for every keyword find synonyms and add them to the query,
+        aiming to improve the recall of the retrieval system.
+        Return the query as a string format containing only the query words, for example if
+        the given query was \' retrieval system improving effectiveness\' then the returned expanded query could be
+        \' retrieval system improving effectiveness extraction system improving performance\'. 
         query: ``` {query} ```
     """
     return prompt
