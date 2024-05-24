@@ -1,0 +1,1 @@
+Chatgpt prompt: You are an expert in Information Retrieval. Assume you have an corpus of documents and an index of the terms. How does the bm25 pipeline rank the documents, explain step by step and in depth 
