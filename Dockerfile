@@ -3,7 +3,8 @@ FROM webis/ir-lab-wise-2023:0.0.4
 
 # Update the tira command to use the latest version
 RUN pip3 uninstall -y tira \
-	&& pip3 install tira
+	&& pip3 install tira \
+	&& pip install openai
 
 ADD . /app
 
