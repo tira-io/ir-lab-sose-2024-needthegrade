@@ -1,13 +1,7 @@
 import openai
 import os
 
-api_key = os.getenv('OPENAI_API_KEY')
-
-if not api_key:
-        raise ValueError("No API key found.")
-else:
-    openai.api_key = api_key
-    client = openai.OpenAI()
+client = openai.OpenAI() #only works in codespace, go to codespaces in settings and add secret "OPENAI_API_KEY"
 
 def main():
     query = "machine learning"
