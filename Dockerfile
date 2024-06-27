@@ -10,6 +10,6 @@ RUN pip3 uninstall -y tira \
 
 RUN mkdir -p /usr/nltk_data && \
     python3 -c "import nltk; nltk.download('stopwords', download_dir='/usr/nltk_data')"
-ENV JAVA_OPTS="-Xmx4g"
+
 ADD . /app
 
