@@ -1,4 +1,4 @@
-# IR Lab SoSe 2024: Retrieval Systems by needthegrade
+    # IR Lab SoSe 2024: Retrieval Systems by needthegrade
 
 This repository contains the retrieval systems of needthegrade. We will implement and evaluate retrieval systems for a corpus of scientific papers (title + abstracts) from the fields of information retrieval and natural language processing (the [IR Anthology](https://ir.webis.de/anthology/) and the [ACL Anthology](https://aclanthology.org/)). We will use [TIRA](https://www.tira.io/) to evaluate the retrieval systems on a set of datasets. The evaluation is done in a controlled environment to improve reproducibility and comparability of the results.
 
