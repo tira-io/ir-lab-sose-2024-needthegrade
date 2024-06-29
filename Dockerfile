@@ -6,7 +6,8 @@ RUN pip3 uninstall -y tira \
 	&& pip3 install tira \
 	&& pip install openai \
     && pip install nltk \
-	&& pip install pandas
+	&& pip install pandas \
+	&& pip install nltk
 
 RUN mkdir -p /usr/nltk_data && \
     python3 -c "import nltk; nltk.download('stopwords', download_dir='/usr/nltk_data')"
